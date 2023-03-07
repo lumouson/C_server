@@ -1,0 +1,1 @@
+E:\git\C_server\x64\Debug\server.exe

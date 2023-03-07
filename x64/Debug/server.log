@@ -1,0 +1,16 @@
+﻿  httpd.cpp
+E:\git\C_server\httpd.cpp(27,20): warning C4244: 'initializing': conversion from 'SOCKET' to 'int', possible loss of data
+E:\git\C_server\httpd.cpp(159,34): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\git\C_server\httpd.cpp(162,34): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\git\C_server\httpd.cpp(165,34): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\git\C_server\httpd.cpp(168,34): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\git\C_server\httpd.cpp(177,34): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\git\C_server\httpd.cpp(186,36): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\git\C_server\httpd.cpp(189,36): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\git\C_server\httpd.cpp(192,36): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\git\C_server\httpd.cpp(195,36): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+E:\git\C_server\httpd.cpp(206,47): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+E:\git\C_server\httpd.cpp(256,18): warning C4244: 'initializing': conversion from 'SOCKET' to 'int', possible loss of data
+E:\git\C_server\httpd.cpp(340,19): warning C4244: 'initializing': conversion from 'SOCKET' to 'int', possible loss of data
+E:\git\C_server\httpd.cpp(353,22): warning C4312: 'type cast': conversion from 'int' to 'void *' of greater size
+  server.vcxproj -> E:\git\C_server\x64\Debug\server.exe

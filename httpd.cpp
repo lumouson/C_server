@@ -125,12 +125,33 @@ int GetLine(int client,char*buff,int size)
 	return i;
 }
 
+//获得文件类型
+const char* getHeadType(const char* fileName)
+{
+	const char* ret = "text/html";
+	const char* p = strrchr(fileName, '.');
+	if (!p)
+		return ret;
+
+	p++;
+	if (!strcmp(p, "css"))
+		ret = "text/css";
+	else if (!strcmp(p, "jpg"))
+		ret = "image/jpeg";
+	else if (!strcmp(p, "png"))
+		ret = "image/png";
+	else if (!strcmp(p, "js"))
+		ret = "application/x-javascript";
+
+	return ret;
+}
+
 //想浏览器发送一个未实现的错误报告
 void Unimplement(int client)
 {
 	//to do
 }
-void not_found(int client) 
+void not_found(int client,const char*type) 
 {
 	char buf[1024];
 
@@ -140,7 +161,7 @@ void not_found(int client)
 	strcpy(buf, "Server: LumouHttpd/0.1\r\n");
 	send(client, buf, strlen(buf), 0);
 
-	sprintf(buf, "Content-Type:text/html\r\n");
+	sprintf(buf, "Content-Type:%s\r\n",type);
 	send(client, buf, strlen(buf), 0);
 
 	sprintf(buf, "\r\n");
@@ -157,7 +178,7 @@ void not_found(int client)
 }
 
 //发送响应包的头信息
-void Headers(int client)
+void Headers(int client,const char* stuffix)
 {
 	char buff[1024]="0";
 
@@ -167,7 +188,7 @@ void Headers(int client)
 	strcpy(buff, "Server: LumouHttpd/0.1\r\n");
 	send(client, buff, strlen(buff), 0);
 
-	strcpy(buff, "Content-type:text/html\n");
+	sprintf(buff, "Content-type:%s\r\n",stuffix);
 	send(client, buff, strlen(buff), 0);
 
 	strcpy(buff, "\r\n");
@@ -204,7 +225,7 @@ void ServerFile(int client, const char* fileName)
 	}
 
 	FILE* resource=NULL;
-	if (strcmp(fileName, "hrdocs/index.html") == 0)
+	if (!strcmp(fileName, "hrdocs/index.html"))
 	{
 		resource = fopen(fileName, "r");
 	}
@@ -214,17 +235,19 @@ void ServerFile(int client, const char* fileName)
 	}
 	if (resource == NULL)
 	{
-		not_found(client);
+		not_found(client,getHeadType(fileName));
 	}
 
 	//发送文件头信息
-	Headers(client);
+	Headers(client,getHeadType(fileName));
 	//发送请求资源信息
 	cat(client, resource);
 	printf("资源发送完毕\n");
 	fclose(resource);
 	resource = NULL;
 }
+
+
 //处理用户请求的线程函数
 DWORD WINAPI accept_request(LPVOID arg)
 {
@@ -265,9 +288,11 @@ DWORD WINAPI accept_request(LPVOID arg)
 	url[i] = 0;
 	PrintLine(url);
 
-	//设置默认调用index.html文件
+	
 	char path[512]="0";
 	sprintf(path, "htdocs%s", url);
+
+	//设置默认调用index.html文件
 	if (path[strlen(path) - 1] == '/')
 	{
 		strcat(path, "index.html");
@@ -285,9 +310,10 @@ DWORD WINAPI accept_request(LPVOID arg)
 		{
 			numchar = GetLine(client_sock, buff, sizeof(buff));
 		}
-	 	not_found(client_sock);
+	 	not_found(client_sock,getHeadType(path));
 		return 0;
 	}
+
 	//如果是目录,默认访问目录下的
 	if ((Status.st_mode & S_IFMT) == S_IFDIR)
 	{
